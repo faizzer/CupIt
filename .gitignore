@@ -1,4 +1,5 @@
+__pycache__/
 data/ranking_test.jsonl
 data/ranking_train.jsonl
 venv/
-__pycache__/
+**/__pycache__
