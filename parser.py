@@ -25,7 +25,7 @@ for i in range(0, 100):
         
         text_ar.append(jsonObj['text'][i].lower())
         comment_ar.append(jsonObj["comments"][i][j]['text'].lower())
-        lem_com_ar.append(funcs.lemmatizer(jsonObj["comments"][i][j]['text'].lower()))
+        lem_com_ar.append(funcs.textblob_lem(jsonObj["comments"][i][j]['text'].lower()))
         score_ar.append(jsonObj['comments'][i][j]['score'])
 
 #Creating dictionary of values for pandas df
