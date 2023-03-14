@@ -2,6 +2,7 @@ import nltk
 from nltk.stem import WordNetLemmatizer 
 from textblob import TextBlob, Word
 from nltk.corpus import wordnet
+from nltk.corpus import words
 
 #basic setup
 nltk.download('wordnet')
@@ -27,11 +28,12 @@ def lemmatizer_func(sentence):
     wordnet_tagged = list(map(lambda x: (x[0], pos_tagger(x[1])), pos_tagged))
     lemmatized_sentence = []
     for word, tag in wordnet_tagged:
-        if tag is None:
-            # if there is no available tag, append the token as is
-            lemmatized_sentence.append(word)
-        else:       
-            # else use the tag to lemmatize the token
-            lemmatized_sentence.append(lemmatizer.lemmatize(word, tag))
+        if word in words.words():
+            if tag is None:
+                # if there is no available tag, append the token as is
+                lemmatized_sentence.append(word)
+            else:       
+                # else use the tag to lemmatize the token
+                lemmatized_sentence.append(lemmatizer.lemmatize(word, tag))
     lemmatized_sentence = " ".join(lemmatized_sentence)    
     return(lemmatized_sentence)
