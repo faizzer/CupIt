@@ -16,7 +16,7 @@ STOPWORDS = conf.STOPWORDS
 
 def check_numb(word):
     out = True
-    numb = {'1','2','3','4','5','6','7','8','9', '.', ',', '@', '\\', '/'}
+    numb = {'1','2','3','4','5','6','7','8','9', '.', ',', '@', '\\', '/', ':'}
     for i in word:
         if i in numb:
             out = False
