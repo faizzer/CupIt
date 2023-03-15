@@ -1,11 +1,18 @@
 import nltk
 from nltk.stem import WordNetLemmatizer 
 from nltk.corpus import wordnet
+import re
+import string
+import unicodedata
+from itertools import filterfalse
+import conf
 
 #basic setup
 nltk.download('wordnet')
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
+
+STOPWORDS = conf.STOPWORDS
 
 def check_numb(word):
     out = True
@@ -43,3 +50,47 @@ def lemmatizer_func(sentence):
                 lemmatized_sentence.append(lemmatizer.lemmatize(word, tag))
     lemmatized_sentence = " ".join(lemmatized_sentence)    
     return(lemmatized_sentence)
+
+def text_preprocessing(sentence):
+    #print(f'Processing row {index}')
+    # convert to all text into lower case
+    sentence = sentence.lower()
+    sentence = re.sub(r'[^a-zA-Z0-9]', ' ', sentence)
+    # replace abbreviations
+    #sentence = re.sub(r'(\b)([A-Z])', r'\1 \2', sentence)
+
+    # remove accents
+    sentence = ''.join(c for c in unicodedata.normalize('NFD', sentence)
+                       if unicodedata.category(c) != 'Mn')
+
+    # remove website links
+    sentence = sentence.replace("https://", "").replace("http://", "")
+
+    # remove usernames
+    sentence = sentence.replace("@", "")
+
+    # remove punctuation marks
+    sentence = sentence.translate(str.maketrans("", "", string.punctuation))
+
+    # remove stop words
+    sentence = " ".join(filterfalse(lambda x: x in STOPWORDS, sentence.split()))
+
+
+    # remove tabs
+    sentence = sentence.translate(str.maketrans("", "", "\t"))
+
+    # remove new lines
+    sentence = sentence.translate(str.maketrans("", "", "\n"))
+
+    # remove extra spaces
+    #sentence = " ".join([word for word in sentence.split() if not word.isspace()])
+    
+    # Replace abbreviations
+    #sentence = sentence.replace("u", "you").replace("r", "are").replace("thx", "thanks")
+    
+      # lemmatize the words
+    lemmatizer = WordNetLemmatizer()
+    sentence = " ".join([lemmatizer.lemmatize(word) for word in sentence.split()])
+    
+    
+    return sentence
