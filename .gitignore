@@ -3,3 +3,6 @@ data/ranking_test.jsonl
 data/ranking_train.jsonl
 venv/
 **/__pycache__
+Models/GoogleNews-vectors-negative300.bin
+data/arr_data.csv
+data/w2v_matrix_for_HarvardX__HDS_3221_2X__1T2016.p
