@@ -13,12 +13,17 @@ nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
 
 STOPWORDS = conf.STOPWORDS
+# reduced set of stopwords
+forbien = {'a', 'the',}
 
-def check_numb(word):
+freq = {'i','be','he','she','me','it','s','ll','t','d'}
+
+def checking(word):
     out = True
-    numb = {'1','2','3','4','5','6','7','8','9', '.', ',', '@', '\\', '/', ':'}
+    stop = {'1','2','3','4','5','6','7','8','9','.',',','@','\\','/',':','(', ')','\'','\"','`',
+           '!','?','#','$','%','^','&','|','<','>','{','}','[','[',']',':',';','-','_',}
     for i in word:
-        if i in numb:
+        if i in stop:
             out = False
             break
     return out
@@ -36,12 +41,17 @@ def pos_tagger(nltk_tag):
         return None
 
 def lemmatizer_func(sentence):
+    
+    # intitial removing of comon words
+    sentence = " ".join(filterfalse(lambda x: x in STOPWORDS, sentence.split()))
+    
     lemmatizer = WordNetLemmatizer()
     pos_tagged = nltk.pos_tag(nltk.word_tokenize(sentence))
     wordnet_tagged = list(map(lambda x: (x[0], pos_tagger(x[1])), pos_tagged))
     lemmatized_sentence = []
     for word, tag in wordnet_tagged:
-        if check_numb(word):
+        #check for invalid words with symbols
+        if checking(word) and word not in freq:
             if tag is None:
                 # if there is no available tag, append the token as is
                 lemmatized_sentence.append(word)
@@ -88,7 +98,7 @@ def text_preprocessing(sentence):
     # Replace abbreviations
     #sentence = sentence.replace("u", "you").replace("r", "are").replace("thx", "thanks")
     
-      # lemmatize the words
+    # lemmatize the words
     lemmatizer = WordNetLemmatizer()
     sentence = " ".join([lemmatizer.lemmatize(word) for word in sentence.split()])
     
