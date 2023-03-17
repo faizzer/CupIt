@@ -13,10 +13,9 @@ nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
 
 STOPWORDS = conf.STOPWORDS
-# reduced set of stopwords
-forbien = {'a', 'the',}
 
-freq = {'i','be','he','she','me','it','s','ll','t','d'}
+# most encounter issue check
+freq = {'i','be','he','she','me','it','s','ll','t','d', 're', 'm','ve'}
 
 def checking(word):
     out = True
